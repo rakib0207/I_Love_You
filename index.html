@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I Love You 💍</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts for romantic feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: radial-gradient(circle at center, #2b0816 0%, #110208 100%);
+            color: #fff;
+            overflow: hidden;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .font-serif-luxury {
+            font-family: 'Cinzel', serif;
+        }
+
+        .font-handwriting {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* 3D Scene Perspective */
+        .scene {
+            perspective: 1200px;
+        }
+
+        /* Realistic Ring Box Container */
+        .box-wrapper {
+            position: relative;
+            transform-style: preserve-3d;
+            cursor: pointer;
+            transition: transform 0.5s ease;
+        }
+
+        .box-wrapper:hover {
+            transform: scale(1.02);
+        }
+
+        /* Natural Box Dimensions */
+        .ring-box-3d {
+            position: relative;
+            width: 180px;
+            height: 160px;
+            transform-style: preserve-3d;
+        }
+
+        /* Natural Hinged Lid */
+        .box-lid {
+            position: absolute;
+            width: 100%;
+            height: 85px;
+            top: 0;
+            left: 0;
+            background: linear-gradient(145deg, #700926 0%, #400213 60%, #25000a 100%);
+            border: 1px solid rgba(212, 175, 55, 0.6);
+            border-bottom: none;
+            border-radius: 12px 12px 2px 2px;
+            transform-origin: top;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 10;
+            box-shadow: 
+                inset 0 1px 3px rgba(255, 235, 170, 0.4),
+                inset 0 -2px 8px rgba(0,0,0,0.8),
+                0 10px 25px rgba(0,0,0,0.7);
+        }
+
+        /* Gold latch accent */
+        .box-lid::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 32px;
+            height: 5px;
+            background: linear-gradient(90deg, #b8860b, #ffd700, #b8860b);
+            border-radius: 3px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        }
+
+        /* Open Lid Action */
+        .box-wrapper.open .box-lid {
+            transform: rotateX(-125deg);
+        }
+
+        /* Box Base Bottom Half */
+        .box-base {
+            position: absolute;
+            width: 100%;
+            height: 95px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(145deg, #59061e 0%, #30010d 100%);
+            border: 1px solid rgba(212, 175, 55, 0.6);
+            border-top: 1px solid rgba(252, 211, 77, 0.3);
+            border-radius: 2px 2px 14px 14px;
+            box-shadow: 
+                inset 0 2px 6px rgba(0,0,0,0.6),
+                0 20px 35px rgba(0,0,0,0.9);
+        }
+
+        /* Inner Velvet Pad */
+        .velvet-pad {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            background: radial-gradient(circle, #7a0c2e 0%, #2b000e 100%);
+            border-radius: 8px;
+            box-shadow: inset 0 0 12px rgba(0,0,0,0.95);
+        }
+
+        /* Ring Insert Slit */
+        .ring-slit {
+            position: absolute;
+            top: 50%;
+            left: 20%;
+            right: 20%;
+            height: 6px;
+            background: #120005;
+            border-radius: 50%;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.9), 0 1px 1px rgba(255,255,255,0.1);
+        }
+
+        /* Realistic Diamond Ring Wrapper */
+        .ring-element {
+            position: absolute;
+            left: 50%;
+            top: 48%;
+            transform: translate(-50%, -50%) scale(0.35);
+            opacity: 0;
+            transition: transform 1.3s cubic-bezier(0.34, 1.4, 0.64, 1), opacity 0.8s ease;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .box-wrapper.open .ring-element {
+            transform: translate(-50%, -160px) scale(1);
+            opacity: 1;
+        }
+
+        /* Diamond Glow Animation */
+        @keyframes diamondSparkle {
+            0%, 100% { filter: drop-shadow(0 0 12px rgba(255, 215, 0, 0.7)) drop-shadow(0 0 20px rgba(255, 255, 255, 0.9)); }
+            50% { filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.95)) drop-shadow(0 0 35px rgba(244, 114, 182, 0.8)); }
+        }
+
+        .sparkle-effect {
+            animation: diamondSparkle 2.2s infinite ease-in-out;
+        }
+
+        /* Circular Rotating Text SVG */
+        .orbit-text-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 330px;
+            height: 330px;
+            transform: translate(-50%, -50%) scale(0.4);
+            opacity: 0;
+            transition: opacity 1s ease 0.6s, transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.6s;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        .box-wrapper.open ~ .orbit-text-box,
+        .box-wrapper.open .orbit-text-box {
+            opacity: 1;
+            transform: translate(-50%, -62%) scale(1);
+        }
+
+        /* Fade out circular text after a few seconds */
+        .orbit-text-box.fade-out {
+            opacity: 0 !important;
+            transition: opacity 1.5s ease !important;
+        }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .rotating-text-svg {
+            animation: rotateOrbit 20s linear infinite;
+            width: 100%;
+            height: 100%;
+        }
+
+        .orbit-text-style {
+            fill: #fbcfe8;
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            text-shadow: 0 0 8px rgba(244, 114, 182, 0.8), 0 0 15px rgba(212, 175, 55, 0.6);
+        }
+
+        /* "I Love You" Text Container */
+        .love-text-container {
+            opacity: 0;
+            transform: translateY(25px);
+            transition: opacity 1s ease 0.6s, transform 1s ease 0.6s;
+        }
+
+        .love-text-container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Radial light burst behind ring */
+        .light-glow {
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            background: radial-gradient(circle, rgba(255,215,0,0.25) 0%, rgba(244,114,182,0.12) 50%, rgba(0,0,0,0) 75%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            transition: transform 1.4s ease 0.4s;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .box-wrapper.open .light-glow {
+            transform: translate(-50%, -125%) scale(1.8);
+        }
+
+        /* Soft Pulse Effect for Click Hint */
+        @keyframes pulseRing {
+            0%, 100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+            50% { box-shadow: 0 0 25px rgba(244, 114, 182, 0.6); }
+        }
+
+        .pulse-box {
+            animation: pulseRing 2s infinite ease-in-out;
+        }
+
+        /* Mobile Responsive Adjustments */
+        @media (max-width: 480px) {
+            .ring-box-3d {
+                width: 150px;
+                height: 135px;
+            }
+            .box-lid {
+                height: 72px;
+            }
+            .box-base {
+                height: 80px;
+            }
+            .box-wrapper.open .ring-element {
+                transform: translate(-50%, -130px) scale(0.85);
+            }
+            .orbit-text-box {
+                width: 260px;
+                height: 260px;
+            }
+            .box-wrapper.open ~ .orbit-text-box,
+            .box-wrapper.open .orbit-text-box {
+                transform: translate(-50%, -58%) scale(1);
+            }
+            .orbit-text-style {
+                font-size: 11px;
+                letter-spacing: 2px;
+            }
+            .box-wrapper.open .light-glow {
+                transform: translate(-50%, -115%) scale(1.4);
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center relative py-6 px-4">
+
+    <canvas id="loveCanvas" class="absolute inset-0 pointer-events-none z-0"></canvas>
+
+    <main class="w-full max-w-lg flex flex-col items-center justify-center z-10 relative">
+        
+        <!-- Instruction Label -->
+        <div id="clickHint" class="mb-12 text-center transition-opacity duration-500">
+            <p class="text-pink-200/90 font-serif-luxury text-base md:text-lg tracking-widest uppercase">Tap the box to open</p>
+            <p class="text-pink-400/80 text-xs mt-1 animate-bounce">
+                <i class="fa-solid fa-hand-pointer"></i>
+            </p>
+        </div>
+
+        <!-- 3D Interactive Ring Box Section -->
+        <div class="scene my-4 relative flex justify-center items-center">
+            
+            <div id="ringBox" class="box-wrapper pulse-box rounded-xl p-1">
+                
+                <!-- Ambient burst backdrop -->
+                <div class="light-glow"></div>
+
+                <!-- Circular Rotating Text SVG Orbit -->
+                <div id="orbitText" class="orbit-text-box">
+                    <svg class="rotating-text-svg" viewBox="0 0 300 300">
+                        <defs>
+                            <path id="circlePath" d="M 150, 150 m -115, 0 a 115,115 0 1,1 230,0 a 115,115 0 1,1 -230,0"></path>
+                        </defs>
+                        <text class="orbit-text-style">
+                            <textPath href="#circlePath" startOffset="0%">
+                                • YOU ARE MY WHOLE WORLD • YOU ARE MY EVERYTHING • MY UNIVERSE •
+                            </textPath>
+                        </text>
+                    </svg>
+                </div>
+
+                <!-- Realistic Gold Diamond Ring SVG -->
+                <div class="ring-element sparkle-effect">
+                    <svg width="120" height="130" viewBox="0 0 120 130" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Diamond Rays -->
+                        <g opacity="0.85">
+                            <line x1="60" y1="4" x2="60" y2="22" stroke="#FFF7D6" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="28" y1="14" x2="40" y2="25" stroke="#FFF7D6" stroke-width="2" stroke-linecap="round"/>
+                            <line x1="92" y1="14" x2="80" y2="25" stroke="#FFF7D6" stroke-width="2" stroke-linecap="round"/>
+                        </g>
+
+                        <!-- Realistic Metallic Ring Band -->
+                        <path d="M 60 46 C 34 46 22 70 22 92 C 22 112 38 124 60 124 C 82 124 98 112 98 92 C 98 70 86 46 60 46 Z" fill="none" stroke="url(#goldGrad)" stroke-width="12" filter="url(#dropShadow)"/>
+                        
+                        <!-- Ring Inner Dark Slot for Realism -->
+                        <path d="M 60 55 C 40 55 31 73 31 92 C 31 106 43 115 60 115 C 77 115 89 106 89 92 C 89 73 80 55 60 55 Z" fill="#120208" opacity="0.9"/>
+
+                        <!-- Diamond Prongs/Crown -->
+                        <path d="M 49 38 L 52 27 L 68 27 L 71 38 Z" fill="url(#goldGrad)"/>
+
+                        <!-- Diamond Gemstone -->
+                        <polygon points="60,8 75,27 60,43 45,27" fill="url(#diamondGrad)" stroke="#FFFFFF" stroke-width="1.2"/>
+                        
+                        <!-- Diamond Facets -->
+                        <polyline points="45,27 60,19 75,27" fill="none" stroke="#FFFFFF" stroke-width="1" opacity="0.9"/>
+                        <line x1="60" y1="19" x2="60" y2="43" stroke="#FFFFFF" stroke-width="1" opacity="0.8"/>
+                        <line x1="53" y1="27" x2="60" y2="43" stroke="#E0F2FE" stroke-width="1" opacity="0.7"/>
+                        <line x1="67" y1="27" x2="60" y2="43" stroke="#E0F2FE" stroke-width="1" opacity="0.7"/>
+
+                        <!-- Gradient definitions -->
+                        <defs>
+                            <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFE885"/>
+                                <stop offset="35%" stop-color="#F7BA43"/>
+                                <stop offset="70%" stop-color="#FFD700"/>
+                                <stop offset="100%" stop-color="#9E6913"/>
+                            </linearGradient>
+                            <linearGradient id="diamondGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#FFFFFF"/>
+                                <stop offset="45%" stop-color="#E0F2FE"/>
+                                <stop offset="85%" stop-color="#BAE6FD"/>
+                                <stop offset="100%" stop-color="#7DD3FC"/>
+                            </linearGradient>
+                            <filter id="dropShadow" x="-20%" y="-20%" width="140%" height="140%">
+                                <feDropShadow dx="0" dy="5" stdDeviation="5" flood-color="#000000" flood-opacity="0.8"/>
+                            </filter>
+                        </defs>
+                    </svg>
+                </div>
+
+                <!-- Box Outer Base and Lid -->
+                <div class="ring-box-3d">
+                    <div class="box-lid"></div>
+                    <div class="box-base">
+                        <div class="velvet-pad">
+                            <div class="ring-slit"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Reveal Message -->
+        <div id="loveMessage" class="love-text-container text-center mt-6 z-20">
+            <h1 class="text-4xl md:text-6xl font-handwriting text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-rose-200 to-amber-200 font-bold drop-shadow-[0_4px_12px_rgba(244,114,182,0.6)]">
+                I Love You Hridi ❤️
+            </h1>
+            <p class="text-xs md:text-sm text-pink-200/80 font-serif-luxury tracking-widest mt-2">
+                Forever & Always
+            </p>
+        </div>
+
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ringBox = document.getElementById('ringBox');
+            const clickHint = document.getElementById('clickHint');
+            const loveMessage = document.getElementById('loveMessage');
+            const orbitText = document.getElementById('orbitText');
+            let isOpen = false;
+            let orbitTimeout = null;
+
+            // Toggle Box Open / Close
+            ringBox.addEventListener('click', () => {
+                isOpen = !isOpen;
+                if (isOpen) {
+                    ringBox.classList.add('open');
+                    ringBox.classList.remove('pulse-box');
+                    clickHint.classList.add('opacity-0');
+                    
+                    // Show "I Love You" text
+                    loveMessage.classList.add('show');
+
+                    // Reset and show circle text, then fade it out after 4 seconds
+                    orbitText.classList.remove('fade-out');
+                    clearTimeout(orbitTimeout);
+                    orbitTimeout = setTimeout(() => {
+                        orbitText.classList.add('fade-out');
+                    }, 4000);
+
+                    spawnHeartBurst();
+                } else {
+                    ringBox.classList.remove('open');
+                    ringBox.classList.add('pulse-box');
+                    clickHint.classList.remove('opacity-0');
+                    
+                    // Hide love message & circle text
+                    loveMessage.classList.remove('show');
+                    orbitText.classList.remove('fade-out');
+                    clearTimeout(orbitTimeout);
+                }
+            });
+
+            // Canvas Background Particles
+            const canvas = document.getElementById('loveCanvas');
+            const ctx = canvas.getContext('2d');
+
+            let width, height;
+            let particles = [];
+
+            function resize() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            }
+
+            window.addEventListener('resize', resize);
+            resize();
+
+            class HeartParticle {
+                constructor(x, y, isBurst = false) {
+                    this.x = x || Math.random() * width;
+                    this.y = y || Math.random() * height + height;
+                    this.size = isBurst ? Math.random() * 12 + 12 : Math.random() * 14 + 8;
+                    this.speedY = isBurst ? -(Math.random() * 2.2 + 1.2) : -(Math.random() * 0.9 + 0.3);
+                    this.opacity = isBurst ? Math.random() * 0.6 + 0.4 : Math.random() * 0.4 + 0.25;
+                    this.isBurst = isBurst;
+                    this.hue = Math.random() * 35 + 325; // Pinkish Red gradients
+                    this.wobbleSpeed = Math.random() * 0.03 + 0.015;
+                    this.wobbleAmp = Math.random() * 1.5 + 0.5;
+                    this.time = Math.random() * 100;
+                }
+
+                update() {
+                    this.time += 1;
+                    this.y += this.speedY;
+                    this.x += Math.sin(this.time * this.wobbleSpeed) * this.wobbleAmp * 0.5;
+
+                    if (this.y < -40 && !this.isBurst) {
+                        this.y = height + 40;
+                        this.x = Math.random() * width;
+                    }
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    
+                    const s = this.size;
+
+                    // Draw Love Soap-Bubble Path (Heart Shape)
+                    ctx.beginPath();
+                    ctx.moveTo(0, s * 0.3);
+                    ctx.bezierCurveTo(0, 0, -s / 2, 0, -s / 2, s * 0.3);
+                    ctx.bezierCurveTo(-s / 2, s * 0.65, 0, s, 0, s);
+                    ctx.bezierCurveTo(0, s, s / 2, s * 0.65, s / 2, s * 0.3);
+                    ctx.bezierCurveTo(s / 2, 0, 0, 0, 0, s * 0.3);
+                    ctx.closePath();
+
+                    // Translucent glossy bubble body
+                    ctx.fillStyle = `hsla(${this.hue}, 90%, 75%, ${this.opacity * 0.28})`;
+                    ctx.fill();
+
+                    // Glowing bubble outline
+                    ctx.strokeStyle = `hsla(${this.hue}, 100%, 88%, ${this.opacity * 0.85})`;
+                    ctx.lineWidth = 1.3;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = `hsla(${this.hue}, 100%, 75%, 0.6)`;
+                    ctx.stroke();
+
+                    // Glossy shine spot on top-left of heart bubble
+                    ctx.beginPath();
+                    ctx.arc(-s * 0.2, s * 0.18, s * 0.12, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity * 0.9})`;
+                    ctx.fill();
+
+                    ctx.restore();
+                }
+            }
+
+            // Create initial love bubble particles
+            for (let i = 0; i < 40; i++) {
+                particles.push(new HeartParticle());
+            }
+
+            // Burst heart bubbles when box opens
+            function spawnHeartBurst() {
+                const boxRect = ringBox.getBoundingClientRect();
+                const centerX = boxRect.left + boxRect.width / 2;
+                const centerY = boxRect.top + boxRect.height / 2;
+
+                for (let i = 0; i < 22; i++) {
+                    setTimeout(() => {
+                        particles.push(new HeartParticle(centerX + (Math.random() * 50 - 25), centerY, true));
+                    }, i * 30);
+                }
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                particles.forEach((p, index) => {
+                    p.update();
+                    p.draw();
+
+                    if (p.isBurst && p.y < -40) {
+                        particles.splice(index, 1);
+                    }
+                });
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        });
+    </script>
+</body>
+</html>
